@@ -38,7 +38,7 @@ def lambda_handler(event, context):
         message = data['Items'][0]
     else:
         message = dict()
-        message['message'] = "No weather record found"
+        message['message'] = "Error: no record found"
     
     message['action'] = 'now'
     

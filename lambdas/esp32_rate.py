@@ -15,22 +15,24 @@ def lambda_handler(event, context):
     message['action'] = 'rate'
     
     if 'rate' in body:
-        rate = int(body["rate"])
-        message['rate'] = rate
-        
-        if 5 <= rate <= 120:
-        
-            response = mqtt.publish(
-                    topic='esp32/sub',
-                    qos=1,
-                    payload=json.dumps({"rate": rate})
-            )
+        try:
+            rate = int(body["rate"])
             
-            print(response)
-            message['message'] = "Waiting for ESP32 acknowledgement ..."
-        
-        else:
-            message['message'] = "Error: params invalid"
+            if 5 <= rate <= 120:
+            
+                response = mqtt.publish(
+                        topic='esp32/sub',
+                        qos=1,
+                        payload=json.dumps({"rate": rate})
+                )
+                
+                print(response)
+                message['message'] = "Waiting for ESP32 acknowledgement ..."
+            
+            else:
+                message['message'] = "Error: rate must be between 5 and 120 minutes"
+        except:
+            message['message'] = "Error: invalid rate format"
     
     else:
         message['message'] = "Error: required params missing"

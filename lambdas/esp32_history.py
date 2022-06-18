@@ -16,7 +16,11 @@ def lambda_handler(event, context):
     if 'graph' in body and 'hours' in body:
         
         graph = str(body["graph"])
-        hours = int(body["hours"])
+        try:
+            hours = int(body["hours"])
+        except:
+            hours = 0
+        
         message['graph'] = graph
         message['hours'] = hours
         
@@ -45,7 +49,7 @@ def lambda_handler(event, context):
             
             message['data'] = data['Items']
         else:
-            message['message'] = "Error: params invalid"
+            message['message'] = "Error:  graphic params invalid"
     else:
         message['message'] = "Error: required params missing"
         
