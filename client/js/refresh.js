@@ -2,7 +2,7 @@ function updateDashboard(responseJSON){
 	for (property in responseJSON){
 		if(property == "timestamp"){
 			timestamp = parseInt(responseJSON[property][vartype[property]]) * 1000;
-			content = new Date(timestamp).toLocaleString('it-IT', {timeZone: 'Europe/Rome'});
+			content = timeZoned(timestamp);
 		}
 		else{
 			data = responseJSON[property][vartype[property]];

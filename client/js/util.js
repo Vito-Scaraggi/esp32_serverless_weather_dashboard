@@ -1,8 +1,15 @@
 //some util functions
 
-//convert date from GMT-0400 to GMT+0200
+//convert date to GMT+0200
 function timeZoned(timestamp){
-	return new Date(new Date(timestamp + 6 * 60 * 60 * 1000).toString());
+	return new Date(timestamp).toLocaleString('it-IT', {timeZone: 'Europe/Rome'});
+}
+
+function dateMake(datestr){
+	arr = datestr.split(', ');
+	dmy = arr[0].split('/');
+	hms = arr[1].split(':')
+	return new Date(dmy[2], dmy[1], dmy[0], hms[0], hms[1], hms[2]);
 }
 
 //show a new message

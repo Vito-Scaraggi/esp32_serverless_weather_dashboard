@@ -7,13 +7,13 @@ function updateGraph(responseJSON){
 	hours = responseJSON['hours'];
 
 	dataPoints.push({
-		x : timeZoned(Date.now() - parseInt(hours) * 60 * 60 * 1000),
+		x : dateMake(timeZoned(Date.now() - parseInt(hours) * 60 * 60 * 1000)),
 		y : null
 	});
 
 	for(key in responseJSON['data']){
 			
-			varx = timeZoned(parseInt(responseJSON['data'][key]['timestamp'][vartype['timestamp']]) * 1000);
+			varx = dateMake(timeZoned(parseInt(responseJSON['data'][key]['timestamp'][vartype['timestamp']]) * 1000));
 			tmp = responseJSON['data'][key][graph][vartype[graph]];
 			vary = tmp != "Fail to read"? parseFloat(tmp) : null;
 			dataPoints.push({
@@ -32,10 +32,10 @@ function updateGraph(responseJSON){
 function draw(title_text = "Empty graph", dataPoints = [], graph = null, yformat = "0.0#"){
 	
 	dataPoints.push({
-		x : timeZoned(Date.now()),
+		x : dateMake(timeZoned(Date.now())),
 		y : null
 	});
-
+	
 	window.chart = new CanvasJS.Chart("chartContainer",
 	{		
 	
