@@ -7,7 +7,7 @@ $(document).ready( function(){
 	window.units = {
 		"temp" : "°C",
 		"humid" : "%",
-		"lum" : "",
+		"lum" : "lumen",
 		"rate" : "mins"
 	}
 

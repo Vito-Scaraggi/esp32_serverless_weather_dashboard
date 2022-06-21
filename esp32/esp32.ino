@@ -30,6 +30,8 @@
 #define ULONG_MAX 4294967295
 #define CONNECT_ATTEMPTS 6
 #define PING_TIME 20
+#define VIN 5 // V power voltage for photocell
+#define R 1000 //ohm fixed resistance value
 enum STATE{ RED, YELLOW, GREEN, BLUE, WHITE};
 
 //global variables
@@ -87,6 +89,15 @@ float readHumid(){
 //read brightness
 int readLum(){
   return analogRead(PHOTO_PIN);
+}
+
+//converte photocell analog read to lumen
+int sensorRawToPhys(int raw){
+  // Conversion rule
+  float Vout = float(raw) * (VIN / float(1023));// Conversion analog to voltage
+  float RLDR = (R * (VIN - Vout))/Vout; // Conversion voltage to resistance
+  int phys= abs(500/(RLDR/1000)); // Conversion resitance to lumen
+  return phys;
 }
 
 //decide if it's time to perform an action
@@ -175,7 +186,7 @@ void publishMessage(){
     else
       weather["humid"] = "Fail to read";
       
-    weather["lum"] = readLum();
+    weather["lum"] = sensorRawToPhys(readLum());
     
     info["rate"] = int (sleep_mins);
     serializeJson(doc, jsonBuffer);
