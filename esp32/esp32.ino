@@ -27,9 +27,9 @@
 #define EEPROM_SIZE 2
 #define LED_BRIGHTNESS 32
 #define BLINK_TIME 100
+#define CONN_TIME 500
 #define ULONG_MAX 4294967295
 #define CONNECT_ATTEMPTS 6
-#define PING_TIME 20
 #define VIN 5 // V power voltage for photocell
 #define R 1000 //ohm fixed resistance value
 enum STATE{ RED, YELLOW, GREEN, BLUE, WHITE};
@@ -122,7 +122,7 @@ void connectWIFI(){
       WiFi.begin(WIFI_SSID[i], WIFI_PASSWORD[i]);
 
       for(int j=0; j < CONNECT_ATTEMPTS && WiFi.status() != WL_CONNECTED; j++){
-        delay(500);
+        delay(CONN_TIME);
         Serial.print(".");
       }
 
@@ -150,7 +150,7 @@ void connectAWS(){
 
     for(int i=0; i < CONNECT_ATTEMPTS && !client.connect(THING_NAME); i++){
       Serial.print(".");
-      delay(500);
+      delay(CONN_TIME);
     }
   
     if(client.connected()){
@@ -195,6 +195,7 @@ void publishMessage(){
       client.publish(AWS_IOT_PUBLISH_TOPIC, jsonBuffer);
       changeState(BLUE);
       previous_data = millis();
+      delay(BLINK_TIME);
       changeState(GREEN);
     }
     else
@@ -221,6 +222,7 @@ void messageHandler(String &topic, String &payload) {
   char ackBuffer[512];
   serializeJson(ack, ackBuffer);
   client.publish(AWS_IOT_PUBLISH_TOPIC, ackBuffer);
+  delay(BLINK_TIME);
   changeState(GREEN);
 }
 
@@ -235,6 +237,7 @@ void setup() {
   WiFi.mode(WIFI_STA);
   // Create a message handler
   client.onMessage(messageHandler);
+  client.setCleanSession(false);
   // Configure WiFiClientSecure to use the AWS IoT device credentials
   net.setCACert(AWS_CERT_CA);
   net.setCertificate(AWS_CERT_CRT);
