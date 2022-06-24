@@ -9,7 +9,7 @@ function dateMake(datestr){
 	arr = datestr.split(', ');
 	dmy = arr[0].split('/');
 	hms = arr[1].split(':')
-	return new Date(dmy[2], dmy[1], dmy[0], hms[0], hms[1], hms[2]);
+	return new Date(dmy[2], dmy[1]-1, dmy[0], hms[0], hms[1], hms[2]);
 }
 
 //show a new message
