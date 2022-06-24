@@ -78,7 +78,7 @@ def lambda_handler(event, context):
     if event['type'] == "ack":
         message = dict()
         message['action'] = 'ack'
-        message['message'] = 'Measurement rate now at {} mins'.format(event['rate'])
+        message['message'] = 'Sampling rate now at {} mins'.format(event['rate'])
         message['rate'] = event['rate']
         broadcast(message)
         
