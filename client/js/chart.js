@@ -71,7 +71,7 @@ function draw(title_text = "Empty graph", dataPoints = [], graph = null, yformat
 			},
 			
 			data : [{
-				type : "spline",
+				type : graph == "rate"? "stepLine" : "spline",
 				xValueType: "dateTime",
 				color: "#ec1525",
 				markerColor : "#fff",
